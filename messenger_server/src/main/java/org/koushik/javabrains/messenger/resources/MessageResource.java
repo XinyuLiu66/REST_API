@@ -1,5 +1,6 @@
 package org.koushik.javabrains.messenger.resources;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.ws.rs.BeanParam;
@@ -12,7 +13,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
 
 import org.koushik.javabrains.messenger.model.Message;
 import org.koushik.javabrains.messenger.resources.beans.MessageFilterBean;
@@ -26,20 +31,30 @@ public class MessageResource {
 	MessageService messageService = new MessageService();
 	
 	@GET
-	public /*List<Message>*/ String getMessages(@BeanParam MessageFilterBean filterBean) {
-/*		if (filterBean.getYear() > 0) {
+	public List<Message>  getMessages(@BeanParam MessageFilterBean filterBean) {
+		if (filterBean.getYear() > 0) {
 			return messageService.getAllMessagesForYear(filterBean.getYear());
 		}
 		if (filterBean.getStart() >= 0 && filterBean.getSize() > 0) {
 			return messageService.getAllMessagesPaginated(filterBean.getStart(), filterBean.getSize());
-		}*/
+		}
 		//return messageService.getAllMessages();
-		return "test";
+		
 	}
 
 	@POST
-	public Message addMessage(Message message) {
-		return messageService.addMessage(message);
+	public /*Message*/ Response addMessage(Message message,@Context UriInfo uriInfo) {
+		//return messageService.addMessage(message);
+		Message m = messageService.addMessage(message);;
+		return Response.status(Status.CREATED)
+				.entity(m).build();
+		
+		// or use Response.creat() take place of Response.status(Status.CREATED)*/
+/*		String newID = String.valueOf(m.getId());
+		URI url = uriInfo.getAbsolutePathBuilder().path(newID).build();
+		return Response.create(uri)
+				.entity(m).build();*/
+		// return response
 	}
 	
 	@PUT
