@@ -6,7 +6,7 @@ import java.util.Map;
 import org.koushik.javabrains.messenger.model.Message;
 import org.koushik.javabrains.messenger.model.Profile;
 
-public class DatabaseClass {
+public static class DatabaseClass {
 
 	private static Map<Long, Message> messages = new HashMap<>();
 	private static Map<String, Profile> profiles = new HashMap<>();
